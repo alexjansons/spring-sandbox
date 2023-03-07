@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class ApplicationTests {
 	static class NoOpTaskScheduler implements TaskScheduler {
 		@Override
@@ -68,6 +67,7 @@ class ApplicationTests {
 			}
 		};
 		webSocketClient.setDefaultHeartbeat(new long[]{1000, 10000});
+		// Emulate the client not sending ping requests (it happens in some cases when computer is locked e.g.)
 		webSocketClient.setTaskScheduler(new NoOpTaskScheduler());
 		StompSession session = webSocketClient.connectAsync(endpointUrl, dummySessionHandler).get();
 		session.subscribe("/topic", dummySessionHandler);
