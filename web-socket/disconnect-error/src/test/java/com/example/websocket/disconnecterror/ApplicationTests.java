@@ -75,10 +75,11 @@ class ApplicationTests {
 		assertTrue(disconnectReceived.get());
 	}
 
+	// This test fails with IllegalArgumentException: No StompHeaderAccessor
 	@Nested
 	@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 	@DirtiesContext
-	@TestPropertySource(properties = {"errorHandler.enabled=true"})
+	@TestPropertySource(properties = {"errorHandlerMode=ENABLED"})
 	class DisconnectWithErrorHandler {
 		@LocalServerPort
 		Integer port;
@@ -92,8 +93,22 @@ class ApplicationTests {
 	@Nested
 	@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 	@DirtiesContext
-	@TestPropertySource(properties = {"errorHandler.enabled=false"})
+	@TestPropertySource(properties = {"errorHandlerMode=DISABLED"})
 	class DisconnectWithoutErrorHandler {
+		@LocalServerPort
+		Integer port;
+
+		@Test
+		void test() throws Exception {
+			testDisconnectByHeartBeatTask(port);
+		}
+	}
+
+	@Nested
+	@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+	@DirtiesContext
+	@TestPropertySource(properties = {"errorHandlerMode=CUSTOM_WITH_WORKAROUND"})
+	class DisconnectWithCustomErrorHandlerWithWorkaround {
 		@LocalServerPort
 		Integer port;
 

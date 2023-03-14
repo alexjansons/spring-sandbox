@@ -1,5 +1,6 @@
 pluginManagement {
 	repositories {
+		maven { url '/home/lukas/.m2/repository' }
 		maven { url 'https://repo.spring.io/milestone' }
 		maven { url 'https://repo.spring.io/snapshot' }
 		gradlePluginPortal()
